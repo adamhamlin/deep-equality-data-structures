@@ -27,7 +27,7 @@ set.size; // 2
 Now, using deep equality:
 
 ```typescript
-import { DeepSet } from '@adamhamlin/deep-equality-data-strucures';
+import { DeepSet } from 'deep-equality-data-structures';
 
 interface MyObject {
     a: number;
