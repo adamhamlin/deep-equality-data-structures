@@ -76,12 +76,12 @@ Additional project-specific options:
     class B {
         constructor(public x: number) {}
     }
+    const a = new A(45);
     const b = new B(45);
-    const c = new C(45);
 
-    const set = new DeepSet([b, c]);
+    const set = new DeepSet([a, b]);
     set.size; // 2
-    const set = new DeepSet([b, c], { jsonSerializableOnly: true });
+    const set = new DeepSet([a, b], { jsonSerializableOnly: true });
     set.size; // 1
     ```
 
