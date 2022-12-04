@@ -1,0 +1,17 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout/install
+        uses: adamhamlin/checkout-node-project@v0.1.0
+
+      - name: Run Tests
+        run: npm run test:ci

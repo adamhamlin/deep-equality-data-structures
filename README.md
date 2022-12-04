@@ -1,5 +1,7 @@
 # Deep Equality Javascript Data Structures
 
+[![CI Status Badge](https://github.com/adamhamlin/deep-equality-data-structures/actions/workflows/ci.yaml/badge.svg)](https://github.com/adamhamlin/deep-equality-data-structures/actions/workflows/ci.yaml)
+
 A drop-in replacement for ES native `Map` and `Set` with deep equality support for objects.
 
 ## Why?
@@ -81,3 +83,9 @@ Additional project-specific options:
 
 -   Don't mutate a map key (or set value) while still using the data structure. The internal representation is not affected by this mutation, so behavior may be unexpected.
 -   This implementation does not explicitly "handle" key collisions. However, with the default algorithm (MD5), even if a map contained one TRILLION entries, the probability of a collision on the next insert is only 0.000000000000001. If you need better odds, use SHA1, SHA256, etc.
+
+## CI/CD
+
+Using Github Actions, the CI build will run on all pull requests and pushes/merges to main.
+
+This project uses [Conventional Commits](https://www.conventionalcommits.org/) and [standard-version](https://github.com/conventional-changelog/standard-version) to facilitate versioning and changelogs.
