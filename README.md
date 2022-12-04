@@ -4,6 +4,12 @@
 
 A drop-in replacement for ES native `Map` and `Set` with deep equality support for objects.
 
+## Install
+
+```bash
+npm install deep-equality-data-structures
+```
+
 ## Why?
 
 ES `Map` and `Set` only support referential equality:
