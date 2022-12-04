@@ -1,6 +1,6 @@
 {
     "name": "deep-equality-data-structures",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Javascript data structures (e.g., Map, Set) that support deep object equality",
     "main": "index.ts",
     "scripts": {
