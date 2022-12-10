@@ -101,7 +101,8 @@ The `options` argument is a superset of the options defined for [object-hash](ht
     const map2 = new DeepMap([[1, b]], { mapValueTransformer });
     map1.equals(map2); // true
 
-    [...map1.entries()]; // [[1, { val: 1, other: 2 }]]
+    [...map1.entries()]; // [[1, { val: 1, other: 1 }]]
+    [...map2.entries()]; // [[1, { val: 1, other: 2 }]]
     ```
 
 -   `useToJsonTransform` - if true, only use JSON-serializable properties when computing hashes, equality, etc. (default: false)
