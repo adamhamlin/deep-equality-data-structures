@@ -1,3 +1,6 @@
 # Ignore artifacts:
 out
 coverage
+
+# Ignore changelog since auto-updated by standard-version
+CHANGELOG.md
