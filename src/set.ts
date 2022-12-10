@@ -1,6 +1,6 @@
 import { Comparable } from './comparable';
-import { HashOptions } from './hash';
 import { DeepMap } from './map';
+import { Options } from './options';
 
 /**
  * A Set implementation that supports deep equality for values.
@@ -10,7 +10,7 @@ export class DeepSet<T> extends Set<T> implements Comparable<DeepSet<T>> {
     private readonly map: DeepMap<T, null>;
 
     // NOTE: This is actually a thin wrapper. We're not using super other than to drive the (typed) API contract.
-    constructor(values?: readonly T[] | null, options?: HashOptions) {
+    constructor(values?: readonly T[] | null, options?: Options<T, null>) {
         super();
         const transformedEntries = values ? values.map((el) => [el, null] as const) : null;
         this.map = new DeepMap(transformedEntries, options);
