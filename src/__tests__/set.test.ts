@@ -193,8 +193,8 @@ describe('DeepSet', () => {
         });
     });
 
-    describe('Hash Options', () => {
-        describe('jsonSerializableOnly', () => {
+    describe('Normalizer Options', () => {
+        describe('useToJsonTransform', () => {
             class A {
                 constructor(public a: number) {}
             }
@@ -204,14 +204,16 @@ describe('DeepSet', () => {
             const b = new B(45);
             const c = new C(45);
 
-            it('jsonSerializableOnly=false', async () => {
+            it('useToJsonTransform=false', async () => {
                 const set = new DeepSet([b, c]);
                 expect(set.size).toBe(2);
             });
 
-            it('jsonSerializableOnly=true', async () => {
-                const set = new DeepSet([b, c], { jsonSerializableOnly: true });
+            it('useToJsonTransform=true', async () => {
+                const set = new DeepSet([b, c], { useToJsonTransform: true });
                 expect(set.size).toBe(1);
+                // Last one in wins
+                expect([...set.values()]).toStrictEqual([c]);
             });
         });
     });

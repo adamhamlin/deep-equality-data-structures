@@ -1,5 +1,6 @@
 import { Comparable } from './comparable';
-import { getHashStr, HashOptions } from './hash';
+import { Normalized, Normalizer } from './normalizer';
+import { Options } from './options';
 
 /**
  * A key-value pair
@@ -10,21 +11,18 @@ interface KeyValuePair<K, V> {
 }
 
 /**
- * Type alias for the output of object hashing.
- */
-type HashedObject = string;
-
-/**
  * A Map implementation that supports deep equality for object keys.
  */
 export class DeepMap<K, V> extends Map<K, V> implements Comparable<DeepMap<K, V>> {
-    private readonly map: Map<HashedObject | K, KeyValuePair<K, V>>;
+    private readonly normalizer: Normalizer<K, V>;
+    private readonly map: Map<Normalized<K>, KeyValuePair<K, V>>;
 
     // NOTE: This is actually a thin wrapper. We're not using super other than to drive the (typed) API contract.
-    constructor(entries?: readonly (readonly [K, V])[] | null, private options?: HashOptions) {
+    constructor(entries?: readonly (readonly [K, V])[] | null, options: Options<K, V> = {}) {
         super();
+        this.normalizer = new Normalizer(options);
         const transformedEntries = entries
-            ? entries.map(([key, val]) => [this.normalize(key), { key, val }] as const)
+            ? entries.map(([key, val]) => [this.normalizeKey(key), { key, val }] as const)
             : null;
         this.map = new Map(transformedEntries);
     }
@@ -40,14 +38,14 @@ export class DeepMap<K, V> extends Map<K, V> implements Comparable<DeepMap<K, V>
      * Returns true if the given key is present in the map.
      */
     override has(key: K): boolean {
-        return this.map.has(this.normalize(key));
+        return this.map.has(this.normalizeKey(key));
     }
 
     /**
      * Store the given key-value pair.
      */
     override set(key: K, val: V): this {
-        this.map.set(this.normalize(key), { key, val });
+        this.map.set(this.normalizeKey(key), { key, val });
         return this;
     }
 
@@ -55,14 +53,14 @@ export class DeepMap<K, V> extends Map<K, V> implements Comparable<DeepMap<K, V>
      * Get the value associated with key. Otherwise, undefined.
      */
     override get(key: K): V | undefined {
-        return this.map.get(this.normalize(key))?.val;
+        return this.map.get(this.normalizeKey(key))?.val;
     }
 
     /**
      * Delete the value associated with key.
      */
     override delete(key: K): boolean {
-        return this.map.delete(this.normalize(key));
+        return this.map.delete(this.normalizeKey(key));
     }
 
     /**
@@ -138,24 +136,17 @@ export class DeepMap<K, V> extends Map<K, V> implements Comparable<DeepMap<K, V>
     contains(other: this): boolean {
         return [...other.entries()].every(([otherKey, otherVal]) => {
             const thisVal = this.get(otherKey);
-            return thisVal !== undefined && this.normalize(thisVal) === this.normalize(otherVal);
+            return thisVal !== undefined && this.normalizeValue(thisVal) === this.normalizeValue(otherVal);
         });
     }
 
     // PRIVATE METHODS FOLLOW...
 
-    /**
-     * Normalize the input by hasing object types to string, otherwise a no-op.
-     * Notably, this allows that two inputs are equatable by value, e.g., input1 === input2
-     */
-    private normalize<T>(input: T): HashedObject | T {
-        return this.isObject(input) ? getHashStr(input, this.options) : input;
+    private normalizeKey(input: K): Normalized<K> {
+        return this.normalizer.normalizeKey(input);
     }
 
-    /**
-     * Returns true if the input is a javascript object.
-     */
-    private isObject(input: unknown): input is object {
-        return typeof input === 'object' && input !== null;
+    private normalizeValue(input: V): Normalized<V> {
+        return this.normalizer.normalizeValue(input);
     }
 }
