@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.0.1...v1.0.2) (2022-12-17)
+
+
+### Bug Fixes
+
+* Properly package for publishing ([#8](https://github.com/adamhamlin/deep-equality-data-structures/issues/8)) ([1ed0e2f](https://github.com/adamhamlin/deep-equality-data-structures/commit/1ed0e2f92f8951c57e52d31e9d7d6ca4f087f3a8))
+
 ### [1.0.1](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.0.0...v1.0.1) (2022-12-10)
 
 ## [1.0.0](https://github.com/adamhamlin/deep-equality-data-structures/compare/v0.1.1...v1.0.0) (2022-12-10)
