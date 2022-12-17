@@ -1,0 +1,2 @@
+# Using "files" whitelist in package.json, but root-level .npmignore will not work :(
+__tests__

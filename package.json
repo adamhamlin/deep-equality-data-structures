@@ -8,7 +8,7 @@
         "/dist"
     ],
     "scripts": {
-        "prepare": "husky install",
+        "prepare": "husky install && npm run compile",
         "_lint": "eslint --fix",
         "_lint:check": "eslint",
         "_format": " prettier --write --ignore-unknown",
