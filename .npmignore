@@ -1,0 +1,2 @@
+# Most ignores are handled by "files" in package.json
+__tests__
