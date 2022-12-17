@@ -2,7 +2,11 @@
     "name": "deep-equality-data-structures",
     "version": "1.0.1",
     "description": "Javascript data structures (e.g., Map, Set) that support deep object equality",
-    "main": "index.ts",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "/dist"
+    ],
     "scripts": {
         "prepare": "husky install",
         "_lint": "eslint --fix",

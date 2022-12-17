@@ -1,5 +1,5 @@
 # TS build dir
-out/
+dist/
 
 # Coverage
 coverage/
