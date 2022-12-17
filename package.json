@@ -2,9 +2,13 @@
     "name": "deep-equality-data-structures",
     "version": "1.0.1",
     "description": "Javascript data structures (e.g., Map, Set) that support deep object equality",
-    "main": "index.ts",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "/dist"
+    ],
     "scripts": {
-        "prepare": "husky install",
+        "prepare": "husky install && npm run compile",
         "_lint": "eslint --fix",
         "_lint:check": "eslint",
         "_format": " prettier --write --ignore-unknown",
@@ -40,7 +44,7 @@
     },
     "homepage": "https://github.com/adamhamlin/deep-equality-data-structures#readme",
     "devDependencies": {
-        "@adamhamlin/eslint-config": "^1.2.0",
+        "@adamhamlin/eslint-config": "^1.3.0",
         "@tsconfig/recommended": "^1.0.1",
         "@types/jest": "^29.2.3",
         "@types/object-hash": "^2.2.1",

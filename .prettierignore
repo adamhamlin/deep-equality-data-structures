@@ -1,5 +1,5 @@
 # Ignore artifacts:
-out
+dist
 coverage
 
 # Ignore changelog since auto-updated by standard-version
