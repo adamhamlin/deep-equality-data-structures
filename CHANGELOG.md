@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.3](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.0.2...v1.0.3) (2022-12-18)
+
+
+### Bug Fixes
+
+* Set typescript as dev dependency ([#9](https://github.com/adamhamlin/deep-equality-data-structures/issues/9)) ([ace2914](https://github.com/adamhamlin/deep-equality-data-structures/commit/ace2914b61a5464f1ec9b936607693ef295ac1c3))
+
 ### [1.0.2](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.0.1...v1.0.2) (2022-12-17)
 
 
