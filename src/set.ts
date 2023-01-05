@@ -5,12 +5,12 @@ import { Options } from './options';
 /**
  * A Set implementation that supports deep equality for values.
  */
-export class DeepSet<T> extends Set<T> implements Comparable<DeepSet<T>> {
+export class DeepSet<V, TxV = V> extends Set<V> implements Comparable<DeepSet<V, TxV>> {
     // Just piggy-back on a DeepMap that uses null values
-    private readonly map: DeepMap<T, null>;
+    private readonly map: DeepMap<V, null, TxV, null>;
 
     // NOTE: This is actually a thin wrapper. We're not using super other than to drive the (typed) API contract.
-    constructor(values?: readonly T[] | null, options?: Options<T, null>) {
+    constructor(values?: readonly V[] | null, options?: Options<V, null, TxV, null>) {
         super();
         const transformedEntries = values ? values.map((el) => [el, null] as const) : null;
         this.map = new DeepMap(transformedEntries, options);
@@ -26,14 +26,14 @@ export class DeepSet<T> extends Set<T> implements Comparable<DeepSet<T>> {
     /**
      * Returns true if the given value is present in the set.
      */
-    override has(key: T): boolean {
-        return this.map.has(key);
+    override has(val: V): boolean {
+        return this.map.has(val);
     }
 
     /**
      * Store the given value.
      */
-    override add(val: T): this {
+    override add(val: V): this {
         this.map.set(val, null);
         return this;
     }
@@ -41,7 +41,7 @@ export class DeepSet<T> extends Set<T> implements Comparable<DeepSet<T>> {
     /**
      * Deletes the specified value.
      */
-    override delete(val: T): boolean {
+    override delete(val: V): boolean {
         return this.map.delete(val);
     }
 
@@ -55,7 +55,7 @@ export class DeepSet<T> extends Set<T> implements Comparable<DeepSet<T>> {
     /**
      * Standard forEach function.
      */
-    override forEach(callbackfn: (val: T, val2: T, set: Set<T>) => void): void {
+    override forEach(callbackfn: (val: V, val2: V, set: Set<V>) => void): void {
         this.map.forEach((_mapVal, mapKey, _map) => {
             callbackfn(mapKey, mapKey, this);
         });
@@ -66,7 +66,7 @@ export class DeepSet<T> extends Set<T> implements Comparable<DeepSet<T>> {
      *
      * @yields the next value in the set
      */
-    override *[Symbol.iterator](): IterableIterator<T> {
+    override *[Symbol.iterator](): IterableIterator<V> {
         for (const [key, _val] of this.map[Symbol.iterator]()) {
             yield key;
         }
@@ -77,7 +77,7 @@ export class DeepSet<T> extends Set<T> implements Comparable<DeepSet<T>> {
      *
      * @yields the next value-value pair in the set
      */
-    override *entries(): IterableIterator<[T, T]> {
+    override *entries(): IterableIterator<[V, V]> {
         for (const val of this[Symbol.iterator]()) {
             yield [val, val];
         }
@@ -88,7 +88,7 @@ export class DeepSet<T> extends Set<T> implements Comparable<DeepSet<T>> {
      *
      * @yields the next key in the map
      */
-    override *keys(): IterableIterator<T> {
+    override *keys(): IterableIterator<V> {
         for (const val of this[Symbol.iterator]()) {
             yield val;
         }
@@ -99,7 +99,7 @@ export class DeepSet<T> extends Set<T> implements Comparable<DeepSet<T>> {
      *
      * @yields the next value in the map
      */
-    override *values(): IterableIterator<T> {
+    override *values(): IterableIterator<V> {
         yield* this.keys();
     }
 

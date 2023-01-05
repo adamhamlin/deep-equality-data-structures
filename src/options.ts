@@ -6,20 +6,20 @@ import { Require } from './utils';
 /**
  * Library options
  */
-interface DeepEqualityDataStructuresOptions<K, V> {
+interface DeepEqualityDataStructuresOptions<K, V, TxK, TxV> {
     /**
      * A function that transforms Map keys or Set values prior to normalization.
      *
      * NOTE: The caller is responsible for not mutating object inputs.
      */
-    transformer?: TransformFunction<K>;
+    transformer?: TransformFunction<K, TxK>;
 
     /**
      * A function that transforms Map values prior to normalization.
      *
      * NOTE: The caller is responsible for not mutating object inputs.
      */
-    mapValueTransformer?: TransformFunction<V>;
+    mapValueTransformer?: TransformFunction<V, TxV>;
 
     /**
      * If true, objects will be JSON-serialized/deserialized into "plain" objects prior to hashing.
@@ -29,14 +29,14 @@ interface DeepEqualityDataStructuresOptions<K, V> {
     useToJsonTransform?: boolean;
 }
 
-export type Options<K, V> = ObjectHashOptions & DeepEqualityDataStructuresOptions<K, V>;
+export type Options<K, V, TxK, TxV> = ObjectHashOptions & DeepEqualityDataStructuresOptions<K, V, TxK, TxV>;
 
 /**
  * Given the specified options, resolve default values as appropriate.
  */
-export function getOptionsWithDefaults<K, V>(
-    options: Options<K, V>
-): Require<Options<K, V>, keyof DeepEqualityDataStructuresOptions<K, V>> {
+export function getOptionsWithDefaults<K, V, TxK, TxV>(
+    options: Options<K, V, TxK, TxV>
+): Require<Options<K, V, TxK, TxV>, keyof DeepEqualityDataStructuresOptions<K, V, TxK, TxV>> {
     return {
         // Default options
         algorithm: 'md5' as const, // not a cryptographic usage, who cares

@@ -1,11 +1,12 @@
-export type TransformFunction<T> = (input: T) => unknown;
+export type TransformFunction<T, R> = (input: T) => R;
 
 export class Transformers {
-    static identity<T>(input: T): T {
-        return input;
+    static identity<T, R = T>(input: T): R {
+        // Just make the types happy :)
+        return input as unknown as R;
     }
 
-    static jsonSerializeDeserialize<T>(obj: T): T {
+    static jsonSerializeDeserialize<T, R = T>(obj: T): R {
         return JSON.parse(JSON.stringify(obj));
     }
 }
