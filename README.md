@@ -61,7 +61,7 @@ set1.contains(set3); // true
 The default settings should be suitable for most use cases, but behavior can be configured.
 
 ```typescript
-new DeepSet<K>(values?, options?)
+new DeepSet<V>(values?, options?)
 new DeepMap<K,V>(entries?, options?)
 ```
 
@@ -75,7 +75,7 @@ The `options` argument is a superset of the options defined for [object-hash](ht
     type MyType = { val: number; other: number };
     const a: MyType = { val: 1, other: 1 };
     const b: MyType = { val: 1, other: 2 };
-    const transformer = (obj: MyType) => ({ val });
+    const transformer = (obj: MyType) => ({ val: obj.val });
 
     const set = new DeepSet([a, b]);
     set.size; // 2
@@ -91,7 +91,7 @@ The `options` argument is a superset of the options defined for [object-hash](ht
     type MyType = { val: number; other: number };
     const a: MyType = { val: 1, other: 1 };
     const b: MyType = { val: 1, other: 2 };
-    const mapValueTransformer = (obj: MyType) => ({ val });
+    const mapValueTransformer = (obj: MyType) => ({ val: obj.val });
 
     const map1 = new DeepMap([[1, a]]);
     const map2 = new DeepMap([[1, b]]);
