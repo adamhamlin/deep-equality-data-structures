@@ -13,12 +13,12 @@ interface KeyValuePair<K, V> {
 /**
  * A Map implementation that supports deep equality for object keys.
  */
-export class DeepMap<K, V> extends Map<K, V> implements Comparable<DeepMap<K, V>> {
-    private readonly normalizer: Normalizer<K, V>;
-    private readonly map: Map<Normalized<K>, KeyValuePair<K, V>>;
+export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Comparable<DeepMap<K, V, TxK, TxV>> {
+    private readonly normalizer: Normalizer<K, V, TxK, TxV>;
+    private readonly map: Map<Normalized<TxK>, KeyValuePair<K, V>>;
 
     // NOTE: This is actually a thin wrapper. We're not using super other than to drive the (typed) API contract.
-    constructor(entries?: readonly (readonly [K, V])[] | null, options: Options<K, V> = {}) {
+    constructor(entries?: readonly (readonly [K, V])[] | null, options: Options<K, V, TxK, TxV> = {}) {
         super();
         this.normalizer = new Normalizer(options);
         const transformedEntries = entries
@@ -142,11 +142,11 @@ export class DeepMap<K, V> extends Map<K, V> implements Comparable<DeepMap<K, V>
 
     // PRIVATE METHODS FOLLOW...
 
-    private normalizeKey(input: K): Normalized<K> {
+    private normalizeKey(input: K): Normalized<TxK> {
         return this.normalizer.normalizeKey(input);
     }
 
-    private normalizeValue(input: V): Normalized<V> {
+    private normalizeValue(input: V): Normalized<TxV> {
         return this.normalizer.normalizeValue(input);
     }
 }

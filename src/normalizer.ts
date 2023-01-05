@@ -11,17 +11,17 @@ type HashedObject = string;
 /**
  * Type for normalized input.
  */
-export type Normalized<T> = HashedObject | T | ReturnType<TransformFunction<T>>;
+export type Normalized<T> = HashedObject | T;
 
 /**
  * Class that normalizes object types to strings via hashing
  */
-export class Normalizer<K, V> {
+export class Normalizer<K, V, TxK, TxV> {
     private readonly objectHashOptions: ObjectHashOptions;
-    private readonly keyTransformer: TransformFunction<K>;
-    private readonly valueTransformer: TransformFunction<V>;
+    private readonly keyTransformer: TransformFunction<K, TxK>;
+    private readonly valueTransformer: TransformFunction<V, TxV>;
 
-    constructor(options: Options<K, V> = {}) {
+    constructor(options: Options<K, V, TxK, TxV> = {}) {
         const { transformer, mapValueTransformer, useToJsonTransform, ...objectHashOptions } =
             getOptionsWithDefaults(options);
         this.keyTransformer = useToJsonTransform ? Transformers.jsonSerializeDeserialize : transformer;
@@ -34,7 +34,7 @@ export class Normalizer<K, V> {
      * @param input the input to normalize
      * @returns the normalized result
      */
-    normalizeKey(input: K): Normalized<K> {
+    normalizeKey(input: K): Normalized<TxK> {
         return this.normalizeHelper(this.keyTransformer(input));
     }
 
@@ -43,7 +43,7 @@ export class Normalizer<K, V> {
      * @param input the input to normalize
      * @returns the normalized result
      */
-    normalizeValue(input: V): Normalized<V> {
+    normalizeValue(input: V): Normalized<TxV> {
         return this.normalizeHelper(this.valueTransformer(input));
     }
 
