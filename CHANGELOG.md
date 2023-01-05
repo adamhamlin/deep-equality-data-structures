@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.0.3...v1.1.0) (2023-01-05)
+
+
+### Features
+
+* Improve type safety of custom transform functions ([#10](https://github.com/adamhamlin/deep-equality-data-structures/issues/10)) ([ee8a4ec](https://github.com/adamhamlin/deep-equality-data-structures/commit/ee8a4ec5de683e0ccb0e98e171ae9d61b8bd4c21))
+
 ### [1.0.3](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.0.2...v1.0.3) (2022-12-18)
 
 
