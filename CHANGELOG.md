@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.1.0...v1.2.0) (2023-01-31)
+
+
+### Features
+
+* Add `union`, `intersection`, and `difference` methods ([#12](https://github.com/adamhamlin/deep-equality-data-structures/issues/12)) ([31f61c0](https://github.com/adamhamlin/deep-equality-data-structures/commit/31f61c0cb49f106c2c7f24ac463a0b96905ba602))
+
 ## [1.1.0](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.0.3...v1.1.0) (2023-01-05)
 
 
