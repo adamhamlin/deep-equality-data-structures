@@ -18,7 +18,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     private readonly map: Map<Normalized<TxK>, KeyValuePair<K, V>>;
 
     // NOTE: This is actually a thin wrapper. We're not using super other than to drive the (typed) API contract.
-    constructor(entries?: readonly (readonly [K, V])[] | null, options: Options<K, V, TxK, TxV> = {}) {
+    constructor(entries?: readonly (readonly [K, V])[] | null, private options: Options<K, V, TxK, TxV> = {}) {
         super();
         this.normalizer = new Normalizer(options);
         const transformedEntries = entries
@@ -138,6 +138,31 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
             const thisVal = this.get(otherKey);
             return thisVal !== undefined && this.normalizeValue(thisVal) === this.normalizeValue(otherVal);
         });
+    }
+
+    /**
+     * @returns a new map whose keys are the union of keys between `this` and `other` maps.
+     *
+     * NOTE: If both maps prescribe the same key, the value from `this` will be retained.
+     */
+    union(other: this): DeepMap<K, V, TxK, TxV> {
+        return new DeepMap([...other.entries(), ...this.entries()], this.options);
+    }
+
+    /**
+     * @returns a new map containing all key-value pairs in `this` whose keys are also in `other`.
+     */
+    intersection(other: this): DeepMap<K, V, TxK, TxV> {
+        const intersectingPairs = [...this.entries()].filter(([key, _value]) => other.has(key));
+        return new DeepMap(intersectingPairs, this.options);
+    }
+
+    /**
+     * @returns a new map containing all key-value pairs in `this` whose keys are not also in `other`.
+     */
+    difference(other: this): DeepMap<K, V, TxK, TxV> {
+        const differencePairs = [...this.entries()].filter(([key, _value]) => !other.has(key));
+        return new DeepMap(differencePairs, this.options);
     }
 
     // PRIVATE METHODS FOLLOW...
