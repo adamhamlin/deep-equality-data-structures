@@ -257,5 +257,103 @@ describe('DeepMap', () => {
                 expect(map1.contains(map2)).toBe(false);
             });
         });
+
+        describe('union method', () => {
+            it('the union of two maps contains all unique keys and associated values', async () => {
+                const map1 = new DeepMap([
+                    [new K('1'), new V('1')],
+                    [new K('2'), new V('2')],
+                ]);
+                const map2 = new DeepMap([
+                    [new K('2'), new V('999')],
+                    [new K('3'), new V('3')],
+                ]);
+                const unionMap = map1.union(map2);
+                expect([...unionMap.entries()]).toStrictEqual([
+                    [new K('2'), new V('2')], // value for common key is the value from the caller
+                    [new K('3'), new V('3')],
+                    [new K('1'), new V('1')],
+                ]);
+            });
+
+            it('the union of equal maps is the same as either input', async () => {
+                const map1 = new DeepMap([[new K('1'), new V('1')]]);
+                const map2 = new DeepMap([[new K('1'), new V('1')]]);
+                expect(map1.equals(map2)).toBe(true);
+                const unionMap = map1.union(map2);
+                expect([...unionMap.entries()]).toStrictEqual([[new K('1'), new V('1')]]);
+            });
+
+            it('the union of map and an empty map is the first map', async () => {
+                const map1 = new DeepMap([[new K('1'), new V('1')]]);
+                const map2 = new DeepMap<K, V>();
+                const unionMap = map1.union(map2);
+                expect([...unionMap.entries()]).toStrictEqual([[new K('1'), new V('1')]]);
+            });
+        });
+
+        describe('intersection method', () => {
+            it('the intersection of two maps contains all shared keys and associated values', async () => {
+                const map1 = new DeepMap([
+                    [new K('1'), new V('1')],
+                    [new K('2'), new V('2')],
+                ]);
+                const map2 = new DeepMap([
+                    [new K('2'), new V('999')],
+                    [new K('3'), new V('3')],
+                ]);
+                const intersectionMap = map1.intersection(map2);
+                expect([...intersectionMap.entries()]).toStrictEqual([
+                    [new K('2'), new V('2')], // value for common key is the value from the caller
+                ]);
+            });
+
+            it('the intersection of equal maps is the same as either input', async () => {
+                const map1 = new DeepMap([[new K('1'), new V('1')]]);
+                const map2 = new DeepMap([[new K('1'), new V('1')]]);
+                expect(map1.equals(map2)).toBe(true);
+                const intersectionMap = map1.intersection(map2);
+                expect([...intersectionMap.entries()]).toStrictEqual([[new K('1'), new V('1')]]);
+            });
+
+            it('the intersection of map and an empty map is an empty map', async () => {
+                const map1 = new DeepMap([[new K('1'), new V('1')]]);
+                const map2 = new DeepMap<K, V>();
+                const intersectionMap = map1.intersection(map2);
+                expect([...intersectionMap.entries()]).toStrictEqual([]);
+            });
+        });
+
+        describe('difference method', () => {
+            it('the difference of two maps contains all keys from first map not in second', async () => {
+                const map1 = new DeepMap([
+                    [new K('1'), new V('1')],
+                    [new K('2'), new V('2')],
+                ]);
+                const map2 = new DeepMap([
+                    [new K('2'), new V('999')],
+                    [new K('3'), new V('3')],
+                ]);
+                const differenceMap = map1.difference(map2);
+                expect([...differenceMap.entries()]).toStrictEqual([
+                    [new K('1'), new V('1')], // value for common key is the value from the caller
+                ]);
+            });
+
+            it('the difference of equal maps is an empty map', async () => {
+                const map1 = new DeepMap([[new K('1'), new V('1')]]);
+                const map2 = new DeepMap([[new K('1'), new V('1')]]);
+                expect(map1.equals(map2)).toBe(true);
+                const differenceMap = map1.difference(map2);
+                expect([...differenceMap.entries()]).toStrictEqual([]);
+            });
+
+            it('the difference of map and an empty map is equal to the first map', async () => {
+                const map1 = new DeepMap([[new K('1'), new V('1')]]);
+                const map2 = new DeepMap<K, V>();
+                const differenceMap = map1.difference(map2);
+                expect([...differenceMap.entries()]).toStrictEqual([[new K('1'), new V('1')]]);
+            });
+        });
     });
 });

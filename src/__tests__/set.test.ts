@@ -2,7 +2,7 @@ import { DeepSet } from '../set';
 import { TestObjectField, TestObject } from './common/test.utils';
 
 describe('DeepSet', () => {
-    describe('Construct new map', () => {
+    describe('Construct new set', () => {
         it('No entries argument/empty', async () => {
             const set = new DeepSet<TestObject>();
             expect(set.size).toBe(0);
@@ -189,6 +189,78 @@ describe('DeepSet', () => {
                 const set1 = new DeepSet([new A('1'), new A('2'), new A('3')]);
                 const set2 = new DeepSet([new A('2'), new A('3'), new A('4')]);
                 expect(set1.contains(set2)).toBe(false);
+            });
+        });
+
+        describe('union method', () => {
+            it('the union of two sets contains all unique values', async () => {
+                const set1 = new DeepSet([new A('1'), new A('2')]);
+                const set2 = new DeepSet([new A('2'), new A('3')]);
+                const unionSet = set1.union(set2);
+                expect([...unionSet.values()]).toStrictEqual([new A('2'), new A('3'), new A('1')]);
+            });
+
+            it('the union of equal sets is the same as either input', async () => {
+                const set1 = new DeepSet([new A('1')]);
+                const set2 = new DeepSet([new A('1')]);
+                expect(set1.equals(set2)).toBe(true);
+                const unionSet = set1.union(set2);
+                expect([...unionSet.values()]).toStrictEqual([new A('1')]);
+            });
+
+            it('the union of set and an empty set is the first set', async () => {
+                const set1 = new DeepSet([new A('1')]);
+                const set2 = new DeepSet<A>();
+                const unionSet = set1.union(set2);
+                expect([...unionSet.values()]).toStrictEqual([new A('1')]);
+            });
+        });
+
+        describe('intersection method', () => {
+            it('the intersection of two sets contains all shared values', async () => {
+                const set1 = new DeepSet([new A('1'), new A('2')]);
+                const set2 = new DeepSet([new A('2'), new A('3')]);
+                const intersectionSet = set1.intersection(set2);
+                expect([...intersectionSet.values()]).toStrictEqual([new A('2')]);
+            });
+
+            it('the intersection of equal sets is the same as either input', async () => {
+                const set1 = new DeepSet([new A('1')]);
+                const set2 = new DeepSet([new A('1')]);
+                expect(set1.equals(set2)).toBe(true);
+                const intersectionSet = set1.intersection(set2);
+                expect([...intersectionSet.values()]).toStrictEqual([new A('1')]);
+            });
+
+            it('the intersection of set and an empty set is an empty set', async () => {
+                const set1 = new DeepSet([new A('1')]);
+                const set2 = new DeepSet<A>();
+                const intersectionSet = set1.intersection(set2);
+                expect([...intersectionSet.values()]).toStrictEqual([]);
+            });
+        });
+
+        describe('difference method', () => {
+            it('the difference of two sets contains all values from first set not in second', async () => {
+                const set1 = new DeepSet([new A('1'), new A('2')]);
+                const set2 = new DeepSet([new A('2'), new A('3')]);
+                const differenceSet = set1.difference(set2);
+                expect([...differenceSet.values()]).toStrictEqual([new A('1')]);
+            });
+
+            it('the difference of equal sets is an empty set', async () => {
+                const set1 = new DeepSet([new A('1')]);
+                const set2 = new DeepSet([new A('1')]);
+                expect(set1.equals(set2)).toBe(true);
+                const differenceSet = set1.difference(set2);
+                expect([...differenceSet.values()]).toStrictEqual([]);
+            });
+
+            it('the difference of set and an empty set is equal to the first set', async () => {
+                const set1 = new DeepSet([new A('1')]);
+                const set2 = new DeepSet<A>();
+                const differenceSet = set1.difference(set2);
+                expect([...differenceSet.values()]).toStrictEqual([new A('1')]);
             });
         });
     });

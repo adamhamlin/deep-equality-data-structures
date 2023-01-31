@@ -44,9 +44,16 @@ This project relies on the [object-hash](https://github.com/puleos/object-hash) 
 
 ## Comparable Interface
 
-Equality and subset comparisons are supported:
+The following supplemental comparisons/methods are included:
+
+-   `equals`
+-   `contains`
+-   `union`
+-   `intersection`
+-   `difference`
 
 ```typescript
+// COMPARISONS
 const set1 = new DeepSet([{ a: 1 }, { b: 2 }]);
 const set2 = new DeepSet([{ a: 1 }, { b: 2 }]);
 set1.equals(set2); // true
@@ -54,6 +61,13 @@ set1.equals(set2); // true
 const set3 = new DeepSet([{ a: 1 }]);
 set1.equals(set3); // false
 set1.contains(set3); // true
+
+// SET OPERATIONS (available for maps, too)
+const set3 = new DeepSet([{ a: 1 }, { b: 2 }]);
+const set4 = new DeepSet([{ b: 2 }, { c: 3 }]);
+set3.union(set4); // DeepSet([{ a: 1 }, { b: 2 }, { c: 3 }])
+set3.intersection(set4); // DeepSet([{ b: 2 }])
+set3.difference(set4); // DeepSet([{ a: 1 }])
 ```
 
 ## Configuration Options
@@ -85,7 +99,7 @@ The `options` argument is a superset of the options defined for [object-hash](ht
     [...set.values()]; // [{ val: 1, other: 2 }]
     ```
 
--   `mapValueTransformer` - a custom function that transforms Map values prior to hashing. This is only relevant to `Comparable` interface operations. It does not affect the values that are stored.
+-   `mapValueTransformer` - a custom function that transforms Map values prior to hashing. This is only relevant to the `.equals` and `.contains` operations from the `Comparable` interface. It does not affect the values that are stored.
 
     ```typescript
     type MyType = { val: number; other: number };
