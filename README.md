@@ -1,5 +1,6 @@
 # Deep Equality Javascript Data Structures
 
+[![npm version](https://badge.fury.io/js/deep-equality-data-structures.svg)](https://badge.fury.io/js/deep-equality-data-structures)
 [![CI Status Badge](https://github.com/adamhamlin/deep-equality-data-structures/actions/workflows/ci.yaml/badge.svg)](https://github.com/adamhamlin/deep-equality-data-structures/actions/workflows/ci.yaml)
 
 A drop-in replacement for ES native `Map` and `Set` with deep equality support for objects.
