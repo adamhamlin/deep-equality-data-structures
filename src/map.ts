@@ -18,6 +18,10 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     private readonly map: Map<Normalized<TxK>, KeyValuePair<K, V>>;
 
     // NOTE: This is actually a thin wrapper. We're not using super other than to drive the (typed) API contract.
+    /**
+     * @param entries optional list of key-value pairs to initialize the map
+     * @param options configuration options
+     */
     constructor(entries?: readonly (readonly [K, V])[] | null, private options: Options<K, V, TxK, TxV> = {}) {
         super();
         this.normalizer = new Normalizer(options);
@@ -29,6 +33,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
 
     /**
      * Getter for number of kev-value pairs in the map.
+     * @inheritdoc
      */
     override get size(): number {
         return this.map.size;
@@ -36,13 +41,14 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
 
     /**
      * Returns true if the given key is present in the map.
+     * @inheritdoc
      */
     override has(key: K): boolean {
         return this.map.has(this.normalizeKey(key));
     }
 
     /**
-     * Store the given key-value pair.
+     * @inheritdoc
      */
     override set(key: K, val: V): this {
         this.map.set(this.normalizeKey(key), { key, val });
@@ -50,14 +56,14 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     }
 
     /**
-     * Get the value associated with key. Otherwise, undefined.
+     * @inheritdoc
      */
     override get(key: K): V | undefined {
         return this.map.get(this.normalizeKey(key))?.val;
     }
 
     /**
-     * Delete the value associated with key.
+     * @inheritdoc
      */
     override delete(key: K): boolean {
         return this.map.delete(this.normalizeKey(key));
@@ -65,13 +71,14 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
 
     /**
      * Clear all key-value pairs from the map.
+     * @inheritdoc
      */
     override clear(): void {
         this.map.clear();
     }
 
     /**
-     * Standard forEach function.
+     * @inheritdoc
      */
     override forEach(callbackfn: (val: V, key: K, map: Map<K, V>) => void): void {
         this.map.forEach((pair, _key, _internalMap) => {
@@ -80,9 +87,8 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     }
 
     /**
-     * Map iterator
-     *
      * @yields the next key-value pair in the map
+     * @inheritdoc
      */
     override *[Symbol.iterator](): IterableIterator<[K, V]> {
         for (const [_hashStr, pair] of this.map[Symbol.iterator]()) {
@@ -91,9 +97,8 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     }
 
     /**
-     * Map iterator. Equivalent to Symbol.iterator.
-     *
      * @yields the next key-value pair in the map
+     * @inheritdoc
      */
     override *entries(): IterableIterator<[K, V]> {
         for (const entry of this[Symbol.iterator]()) {
@@ -102,9 +107,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     }
 
     /**
-     * Map keys iterator
-     *
-     * @yields the next key in the map
+     * @inheritdoc
      */
     override *keys(): IterableIterator<K> {
         for (const [key, _val] of this[Symbol.iterator]()) {
@@ -113,9 +116,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     }
 
     /**
-     * Map values iterator
-     *
-     * @yields the next value in the map
+     * @inheritdoc
      */
     override *values(): IterableIterator<V> {
         for (const [_key, val] of this[Symbol.iterator]()) {
