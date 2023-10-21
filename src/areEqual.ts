@@ -8,9 +8,9 @@ import { DeepSet } from './set';
  * @returns true if every element in `values` is equal to every other element
  * @throws {Error} if `values` list is empty
  */
-export function isEqual<V, TxV = V>(values: V[], options?: Options<V, null, TxV, null>): boolean {
+export function areEqual<V, TxV = V>(values: V[], options?: Options<V, null, TxV, null>): boolean {
     if (values.length === 0) {
-        throw new Error('Empty values list passed to isEqual function');
+        throw new Error('Empty values list passed to areEqual function');
     }
     const set = new DeepSet(values, options);
     return set.size === 1;

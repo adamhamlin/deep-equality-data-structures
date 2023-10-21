@@ -140,6 +140,11 @@ The `options` argument is a superset of the options defined for [object-hash](ht
     set.size; // 1
     ```
 
+## Static Utility Methods
+
+-   _`areEqual(values, options?)`_: Returns `true` if all elements in `values` are equal. This can be useful when you need to quickly
+    test equality of more than 2 values, or when you want to specify an equality transform (via `options.transformer`).
+
 ## Notes/Caveats
 
 -   This still supports primitive keys/values like traditional `Map`/`Set`.
