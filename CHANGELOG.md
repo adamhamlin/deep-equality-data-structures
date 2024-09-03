@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.3.1...v1.4.0) (2024-09-03)
+
+
+### Features
+
+* Add `BiDirectionalDeepMap` ([#18](https://github.com/adamhamlin/deep-equality-data-structures/issues/18)) ([1232075](https://github.com/adamhamlin/deep-equality-data-structures/commit/123207584168c536a0fcb27e2d99363305aa76ad))
+
 ### [1.3.1](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.3.0...v1.3.1) (2024-07-19)
 
 ## [1.3.0](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.2.1...v1.3.0) (2023-10-21)
