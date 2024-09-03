@@ -56,7 +56,7 @@ The following supplemental comparisons/methods are included:
 ```typescript
 // COMPARISONS
 const set1 = new DeepSet([{ a: 1 }, { b: 2 }]);
-const set2 = new DeepSet([{ a: 1 }, { b: 2 }]);
+const set2 = new DeepSet([{ b: 2 }, { a: 1 }]);
 set1.equals(set2); // true
 
 const set3 = new DeepSet([{ a: 1 }]);
@@ -100,7 +100,7 @@ The `options` argument is a superset of the options defined for [object-hash](ht
     [...set.values()]; // [{ val: 1, other: 2 }]
     ```
 
--   `mapValueTransformer` - a custom function that transforms Map values prior to hashing. This is only relevant to the `.equals` and `.contains` operations from the `Comparable` interface. It does not affect the values that are stored.
+-   `mapValueTransformer` - a custom function that transforms Map values prior to hashing. This is only relevant to the `.equals`/`.contains` operations from the [Comparable interface](#comparable-interface), as well as the [Bi-Directional DeepMap](#bi-directional-deepmap). It does not affect the values that are stored.
 
     ```typescript
     type MyType = { val: number; other: number };
@@ -140,9 +140,24 @@ The `options` argument is a superset of the options defined for [object-hash](ht
     set.size; // 1
     ```
 
+## Bi-Directional DeepMap
+
+This library also exposes a `BiDirectionalDeepMap` class, which supports O(1) lookups by both keys and values. It provides the following extended API:
+
+-   _`hasValue(val: V): boolean`_: Returns true if `val` exists as a value in the map
+-   _`getKeyByValue(val: V): K | undefined`_: Returns the key associated with `val` if it exists
+-   _`deleteByValue(val: V): boolean`_: Removes the key-value pair whose value is `val` and returns true if found
+
+### Caveats
+
+Note that this "two-way" map has the traditional caveats:
+
+-   There is a ~2x memory footprint
+-   Keys and values must be 1-to-1, meaning each key must have a distinct value and vice versa. This implementation will error if attempting to set a key-value pair whose _value_ is already present in the map with a different _key_.
+
 ## Static Utility Methods
 
--   _`areEqual(values, options?)`_: Returns `true` if all elements in `values` are equal. This can be useful when you need to quickly
+-   _`areEqual(values, options?)`_: Returns true if all elements in `values` are equal. This can be useful when you need to quickly
     test equality of more than 2 values, or when you want to specify an equality transform (via `options.transformer`).
 
 ## Notes/Caveats
