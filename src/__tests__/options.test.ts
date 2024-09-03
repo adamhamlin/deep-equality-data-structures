@@ -1,7 +1,7 @@
 import { getOptionsWithDefaults } from '../options';
 import { Transformers } from '../transformers';
 
-describe('../options.ts', () => {
+describe('options.ts', () => {
     describe('getOptionsWithDefaults', () => {
         it('baseline/default values', async () => {
             expect(getOptionsWithDefaults({})).toStrictEqual({

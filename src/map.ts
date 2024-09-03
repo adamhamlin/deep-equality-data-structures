@@ -166,13 +166,13 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
         return new DeepMap(differencePairs, this.options);
     }
 
-    // PRIVATE METHODS FOLLOW...
+    // PRIVATE/PROTECTED METHODS FOLLOW...
 
-    private normalizeKey(input: K): Normalized<TxK> {
+    protected normalizeKey(input: K): Normalized<TxK> {
         return this.normalizer.normalizeKey(input);
     }
 
-    private normalizeValue(input: V): Normalized<TxV> {
+    protected normalizeValue(input: V): Normalized<TxV> {
         return this.normalizer.normalizeValue(input);
     }
 }
