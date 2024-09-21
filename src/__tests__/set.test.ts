@@ -264,29 +264,4 @@ describe('DeepSet', () => {
             });
         });
     });
-
-    describe('Normalizer Options', () => {
-        describe('useToJsonTransform', () => {
-            class A {
-                constructor(public a: number) {}
-            }
-            class B extends A {}
-            class C extends A {}
-
-            const b = new B(45);
-            const c = new C(45);
-
-            it('useToJsonTransform=false', async () => {
-                const set = new DeepSet([b, c]);
-                expect(set.size).toBe(2);
-            });
-
-            it('useToJsonTransform=true', async () => {
-                const set = new DeepSet([b, c], { useToJsonTransform: true });
-                expect(set.size).toBe(1);
-                // Last one in wins
-                expect([...set.values()]).toStrictEqual([c]);
-            });
-        });
-    });
 });

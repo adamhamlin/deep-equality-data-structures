@@ -23,10 +23,13 @@ interface DeepEqualityDataStructuresOptions<K, V, TxK, TxV> {
 
     /**
      * If true, objects will be JSON-serialized/deserialized into "plain" objects prior to hashing.
-     *
-     * NOTE: This setting overrides `transformer` and `mapValuesTransformer`.
      */
     useToJsonTransform?: boolean;
+
+    /**
+     * If true, all string values (including keys/values within objects and arrays) will use case-insensitive equality comparisons.
+     */
+    caseInsensitive?: boolean;
 }
 
 export type Options<K, V, TxK, TxV> = ObjectHashOptions & DeepEqualityDataStructuresOptions<K, V, TxK, TxV>;
@@ -43,6 +46,7 @@ export function getOptionsWithDefaults<K, V, TxK, TxV>(
         transformer: Transformers.identity,
         mapValueTransformer: Transformers.identity,
         useToJsonTransform: false,
+        caseInsensitive: false,
         // Supplied options
         ...options,
     };

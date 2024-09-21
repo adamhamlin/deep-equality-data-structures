@@ -45,6 +45,7 @@ describe('areEqual', () => {
     });
 
     describe('Using options', () => {
+        // Just sanity check that we can pass options to this function
         type MyObject = { key: string; other: string };
         const a = { key: 'value', other: 'a' };
         const b = { key: 'value', other: 'b' };
