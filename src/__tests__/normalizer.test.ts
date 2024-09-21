@@ -34,7 +34,9 @@ describe('../normalizer.ts', () => {
             expect(n.normalizeKey(undefined)).toBeUndefined();
         });
 
-        describe('Configurable options', () => {
+        describe('Unobservable options', () => {
+            // Just testing pass-thru of object-hash library options, since we can't validate some things
+            // based on the result
             describe('options.algorithm', () => {
                 it('Uses MD5 as default algorithm', async () => {
                     n.normalizeKey({});
@@ -45,53 +47,6 @@ describe('../normalizer.ts', () => {
                     const n = new Normalizer({ algorithm: 'sha1' });
                     n.normalizeKey({});
                     expect(hash).toHaveBeenCalledWith({}, { algorithm: 'sha1' });
-                });
-            });
-
-            describe('options.transformer', () => {
-                it('Can define a transformer function', () => {
-                    type Blah = { val: number };
-                    const a: Blah = { val: 1 };
-                    const b: Blah = { val: 3 };
-                    expect(n.normalizeKey(a)).not.toBe(n.normalizeKey(b));
-                    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-                    const transformer = (obj: Blah) => {
-                        return { val: obj.val % 2 };
-                    };
-                    const withTransformer = new Normalizer({ transformer });
-                    expect(withTransformer.normalizeKey(a)).toBe(withTransformer.normalizeKey(b));
-                });
-            });
-
-            describe('options.mapValueTransformer', () => {
-                it('Can define a mapValueTransformer function', () => {
-                    type Blah = { val: number };
-                    const a: Blah = { val: 1 };
-                    const b: Blah = { val: 3 };
-                    expect(n.normalizeValue(a)).not.toBe(n.normalizeValue(b));
-                    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-                    const mapValueTransformer = (obj: Blah) => {
-                        return { val: obj.val % 2 };
-                    };
-                    const withTransformer = new Normalizer({ mapValueTransformer });
-                    expect(withTransformer.normalizeValue(a)).toBe(withTransformer.normalizeValue(b));
-                });
-            });
-
-            describe('options.useToJsonTransform', () => {
-                it('Can specify useToJsonTransform setting', () => {
-                    class A {
-                        constructor(public x: number) {}
-                    }
-                    class B {
-                        constructor(public x: number) {}
-                    }
-                    const a = new A(45);
-                    const b = new B(45);
-                    expect(n.normalizeKey(a)).not.toBe(n.normalizeKey(b));
-                    const withToJson = new Normalizer({ useToJsonTransform: true });
-                    expect(withToJson.normalizeKey(a)).toBe(withToJson.normalizeKey(b));
-                    expect(withToJson.normalizeValue(a)).toBe(withToJson.normalizeValue(b));
                 });
             });
         });

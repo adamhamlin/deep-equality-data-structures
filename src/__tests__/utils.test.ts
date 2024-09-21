@@ -1,4 +1,4 @@
-import { stringify } from '../utils';
+import { chain, stringify } from '../utils';
 
 describe('utils.ts', () => {
     describe('#stringify', () => {
@@ -18,6 +18,22 @@ describe('utils.ts', () => {
 
         it('stringifies object values which have an overridden toString method', async () => {
             expect(stringify(new RegExp('some_regexp', 'g'))).toBe('/some_regexp/g');
+        });
+    });
+
+    describe('#chain', () => {
+        it('invokes each function in the list with the return value of the previous', async () => {
+            const chained = chain([
+                (arg: number) => arg + 100,
+                (arg: number) => arg * -1,
+                (arg: number) => `Hello, ${arg}!`,
+            ]);
+            expect(chained(4)).toBe('Hello, -104!');
+        });
+
+        it('a single function is invoked as is', async () => {
+            const chained = chain([(arg: number) => arg + 100]);
+            expect(chained(4)).toBe(104);
         });
     });
 });

@@ -122,7 +122,7 @@ The `options` argument is a superset of the options defined for [object-hash](ht
 
 -   `useToJsonTransform` - if true, only use JSON-serializable properties when computing hashes, equality, etc. (default: false)
 
-    > _NOTE: This setting overrides both `transformer` and `mapValueTransformer`_
+    > _NOTE: This transform will always be applied BEFORE `transformer` and `mapValueTransformer`, if applicable._
 
     ```typescript
     class A {
@@ -137,6 +137,20 @@ The `options` argument is a superset of the options defined for [object-hash](ht
     const set = new DeepSet([a, b]);
     set.size; // 2
     const set = new DeepSet([a, b], { useToJsonTransform: true });
+    set.size; // 1
+    ```
+
+-   `caseInsensitive` - If true, all string values--including keys/values within objects and arrays--will be evaluated as case-insensitive. (default: false)
+
+    > _NOTE: This transform will always be applied AFTER `transformer` and `mapValueTransformer`, if applicable. For objects, it will be applied before `replacer` (from object-hash options)._
+
+    ```typescript
+    const a = { key: 'value' };
+    const b = { key: 'VALUE' };
+
+    const set = new DeepSet([a, b]);
+    set.size; // 2
+    const set = new DeepSet([a, b], { caseInsensitive: true });
     set.size; // 1
     ```
 
