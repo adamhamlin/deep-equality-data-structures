@@ -125,6 +125,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     }
 
     /**
+     * @param other the map to compare against
      * @returns true if the entries of `other` are the same as this map
      */
     equals(other: this): boolean {
@@ -132,37 +133,42 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     }
 
     /**
+     * @param other the map to compare against
      * @returns true if the entries of `other` are all contained in this map
      */
     contains(other: this): boolean {
-        return [...other.entries()].every(([otherKey, otherVal]) => {
-            const thisVal = this.get(otherKey);
-            return thisVal !== undefined && this.normalizeValue(thisVal) === this.normalizeValue(otherVal);
-        });
+        return [...other.entries()].every(([key, val]) => this.keyValuePairIsPresentIn(key, val, this));
     }
 
     /**
+     * @param other the map to compare against
      * @returns a new map whose keys are the union of keys between `this` and `other` maps.
      *
-     * NOTE: If both maps prescribe the same key, the value from `this` will be retained.
+     * NOTE: If both maps prescribe the same key, the key-value pair from `this` will be retained.
      */
     union(other: this): DeepMap<K, V, TxK, TxV> {
         return new DeepMap([...other.entries(), ...this.entries()], this.options);
     }
 
     /**
-     * @returns a new map containing all key-value pairs in `this` whose keys are also in `other`.
+     * @param other the map to compare against
+     * @returns a new map containing all key-value pairs in `this` that are also present in `other`.
      */
     intersection(other: this): DeepMap<K, V, TxK, TxV> {
-        const intersectingPairs = [...this.entries()].filter(([key, _value]) => other.has(key));
+        const intersectingPairs = [...this.entries()].filter(([key, val]) =>
+            this.keyValuePairIsPresentIn(key, val, other)
+        );
         return new DeepMap(intersectingPairs, this.options);
     }
 
     /**
-     * @returns a new map containing all key-value pairs in `this` whose keys are not also in `other`.
+     * @param other the map to compare against
+     * @returns a new map containing all key-value pairs in `this` that are not present in `other`.
      */
     difference(other: this): DeepMap<K, V, TxK, TxV> {
-        const differencePairs = [...this.entries()].filter(([key, _value]) => !other.has(key));
+        const differencePairs = [...this.entries()].filter(
+            ([key, val]) => !this.keyValuePairIsPresentIn(key, val, other)
+        );
         return new DeepMap(differencePairs, this.options);
     }
 
@@ -174,5 +180,13 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
 
     protected normalizeValue(input: V): Normalized<TxV> {
         return this.normalizer.normalizeValue(input);
+    }
+
+    /**
+     * @returns true if the key is present in the provided map w/ the specified value
+     */
+    private keyValuePairIsPresentIn(key: K, val: V, mapToCheck: this): boolean {
+        const checkVal = mapToCheck.get(key);
+        return checkVal !== undefined && this.normalizeValue(checkVal) === this.normalizeValue(val);
     }
 }

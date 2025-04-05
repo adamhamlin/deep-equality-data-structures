@@ -259,7 +259,7 @@ describe('DeepMap', () => {
         });
 
         describe('union method', () => {
-            it('the union of two maps contains all unique keys and associated values', async () => {
+            it('the union of two maps contains all key-value pairs from first map and any unique keys from second map', async () => {
                 const map1 = new DeepMap([
                     [new K('1'), new V('1')],
                     [new K('2'), new V('2')],
@@ -293,19 +293,19 @@ describe('DeepMap', () => {
         });
 
         describe('intersection method', () => {
-            it('the intersection of two maps contains all shared keys and associated values', async () => {
+            it('the intersection of two maps contains all shared key-value pairs', async () => {
                 const map1 = new DeepMap([
                     [new K('1'), new V('1')],
                     [new K('2'), new V('2')],
-                ]);
-                const map2 = new DeepMap([
-                    [new K('2'), new V('999')],
                     [new K('3'), new V('3')],
                 ]);
-                const intersectionMap = map1.intersection(map2);
-                expect([...intersectionMap.entries()]).toStrictEqual([
-                    [new K('2'), new V('2')], // value for common key is the value from the caller
+                const map2 = new DeepMap([
+                    [new K('1'), new V('1')],
+                    [new K('2'), new V('999')], // same key but different value -- not a match
+                    [new K('4'), new V('4')],
                 ]);
+                const intersectionMap = map1.intersection(map2);
+                expect([...intersectionMap.entries()]).toStrictEqual([[new K('1'), new V('1')]]);
             });
 
             it('the intersection of equal maps is the same as either input', async () => {
@@ -325,18 +325,21 @@ describe('DeepMap', () => {
         });
 
         describe('difference method', () => {
-            it('the difference of two maps contains all keys from first map not in second', async () => {
+            it('the difference of two maps contains all key-value pairs from first map not in second', async () => {
                 const map1 = new DeepMap([
                     [new K('1'), new V('1')],
                     [new K('2'), new V('2')],
+                    [new K('3'), new V('3')],
                 ]);
                 const map2 = new DeepMap([
-                    [new K('2'), new V('999')],
-                    [new K('3'), new V('3')],
+                    [new K('1'), new V('1')],
+                    [new K('2'), new V('999')], // same key but different value -- not a match
+                    [new K('4'), new V('4')],
                 ]);
                 const differenceMap = map1.difference(map2);
                 expect([...differenceMap.entries()]).toStrictEqual([
-                    [new K('1'), new V('1')], // value for common key is the value from the caller
+                    [new K('2'), new V('2')],
+                    [new K('3'), new V('3')],
                 ]);
             });
 
