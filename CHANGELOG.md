@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.5.1...v2.0.0) (2025-04-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* validate consistent options used during comparison operations (#23)
+* improve semantics of `map.intersection` and `map.difference` (#22)
+
+### Features
+
+* improve semantics of `map.intersection` and `map.difference` ([#22](https://github.com/adamhamlin/deep-equality-data-structures/issues/22)) ([6ffb500](https://github.com/adamhamlin/deep-equality-data-structures/commit/6ffb5002c16f4bc31a4a214c04aabbeea4d86f22))
+* validate consistent options used during comparison operations ([#23](https://github.com/adamhamlin/deep-equality-data-structures/issues/23)) ([160663e](https://github.com/adamhamlin/deep-equality-data-structures/commit/160663eec652feb7493b15b0d50c4c5739cb7816))
+
 ### [1.5.1](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.5.0...v1.5.1) (2024-10-11)
 
 ## [1.5.0](https://github.com/adamhamlin/deep-equality-data-structures/compare/v1.4.0...v1.5.0) (2024-09-21)
