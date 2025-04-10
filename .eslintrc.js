@@ -6,6 +6,7 @@ module.exports = {
             plugins: ['jest'],
             extends: ['plugin:jest/all'],
             rules: {
+                'jest/expect-expect': ['error', { assertFunctionNames: ['expect*'] }],
                 'jest/prefer-expect-assertions': 'off',
                 'jest/prefer-lowercase-title': 'off',
                 'jest/max-expects': ['error', { max: 8 }],

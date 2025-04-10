@@ -1,3 +1,4 @@
+import { DeepEqualityDataStructuresError } from './errors';
 import { DeepMap } from './map';
 import { Normalized } from './normalizer';
 import { Options } from './options';
@@ -27,7 +28,7 @@ export class BiDirectionalDeepMap<K, V, TxK = K, TxV = V> extends DeepMap<K, V, 
         // Enforce 1-to-1: Don't allow writing a value which is already present in the map for a different key
         const preexistingValueKey = this.getKeyByValue(val);
         if (preexistingValueKey !== undefined && this.normalizeKey(preexistingValueKey) !== this.normalizeKey(key)) {
-            throw new Error(
+            throw new DeepEqualityDataStructuresError(
                 `Could not set key='${stringify(key)}': The value='${stringify(
                     val
                 )}' is already associated with key='${stringify(preexistingValueKey)}'`

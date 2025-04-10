@@ -22,8 +22,11 @@ export class Normalizer<K, V, TxK, TxV> {
     private readonly caseInsensitive: boolean;
     private readonly keyTransformer: TransformFunction<K, TxK>;
     private readonly valueTransformer: TransformFunction<V, TxV>;
+    private readonly optionsChecksum: string;
 
     constructor(options: Options<K, V, TxK, TxV> = {}) {
+        this.optionsChecksum = hash(options);
+
         const { transformer, mapValueTransformer, useToJsonTransform, caseInsensitive, ...objectHashOptions } =
             getOptionsWithDefaults(options);
         this.objectHashOptions = objectHashOptions;
@@ -45,6 +48,13 @@ export class Normalizer<K, V, TxK, TxV> {
                 ? chain([caseInsensitiveReplacer, replacer])
                 : caseInsensitiveReplacer;
         }
+    }
+
+    /**
+     * @returns the checksum for the options passed to this Normalizer
+     */
+    getOptionsChecksum(): string {
+        return this.optionsChecksum;
     }
 
     /**

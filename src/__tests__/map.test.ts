@@ -1,4 +1,6 @@
+import { Comparable } from '../comparable';
 import { DeepMap } from '../map';
+import { Options } from '../options';
 import { TestObjectField, TestObject } from './common/test.utils';
 
 describe('DeepMap', () => {
@@ -357,6 +359,68 @@ describe('DeepMap', () => {
                 const differenceMap = map1.difference(map2);
                 expect([...differenceMap.entries()]).toStrictEqual([[new K('1'), new V('1')]]);
             });
+        });
+
+        describe('Options checksum validation', () => {
+            type TestOptions = Options<number, number, number, number>;
+            type ComparableOperation = keyof Comparable<number>;
+
+            const operationTypes: ComparableOperation[] = ['equals', 'contains', 'union', 'intersection', 'difference'];
+            const errorMsg = 'Structures must use same options for Comparable interface operations';
+
+            const optionsA1: TestOptions = {};
+            const optionsA2: TestOptions = { useToJsonTransform: true };
+            const optionsA3: TestOptions = { transformer: (n) => n + 1 };
+            const optionsA4: TestOptions = { transformer: (k) => k + 1 };
+            const optionsA5: TestOptions = { transformer: (k) => k + 1, unorderedSets: true };
+            const optionsA6: TestOptions = { unorderedSets: true };
+            const optionsA7: TestOptions = undefined as unknown as TestOptions;
+
+            const optionsB1: TestOptions = {};
+            const optionsB2: TestOptions = { useToJsonTransform: true };
+            const optionsB3: TestOptions = { transformer: (n) => n + 1 };
+            const optionsB4: TestOptions = { transformer: (k) => k + 1 };
+            const optionsB5: TestOptions = { transformer: (k) => k + 1, unorderedSets: true };
+            const optionsB6: TestOptions = { unorderedSets: true };
+            const optionsB7: TestOptions = undefined as unknown as TestOptions;
+
+            function getMapWithOptions(options: TestOptions): DeepMap<number, number> {
+                return new DeepMap([[1, 1]], options);
+            }
+
+            function expectOptionsError(opts1: TestOptions, opts2: TestOptions, operation: ComparableOperation): void {
+                expect(() => getMapWithOptions(opts1)[operation](getMapWithOptions(opts2))).toThrow(errorMsg);
+            }
+
+            function expectNoOptionsError(
+                opts1: TestOptions,
+                opts2: TestOptions,
+                operation: ComparableOperation
+            ): void {
+                expect(() => getMapWithOptions(opts1)[operation](getMapWithOptions(opts2))).not.toThrow();
+            }
+
+            it.each(operationTypes)('error when attempting %s operation with different options', async (operation) => {
+                expectOptionsError(optionsA1, optionsA2, operation);
+                expectOptionsError(optionsA2, optionsA3, operation);
+                expectOptionsError(optionsA3, optionsA4, operation);
+                expectOptionsError(optionsA4, optionsA5, operation);
+                expectOptionsError(optionsA5, optionsA6, operation);
+                expectOptionsError(optionsA6, optionsA7, operation);
+            });
+
+            it.each(operationTypes)(
+                'no error when attempting %s operation with identical options',
+                async (operation) => {
+                    expectNoOptionsError(optionsA1, optionsB1, operation);
+                    expectNoOptionsError(optionsA2, optionsB2, operation);
+                    expectNoOptionsError(optionsA3, optionsB3, operation);
+                    expectNoOptionsError(optionsA4, optionsB4, operation);
+                    expectNoOptionsError(optionsA5, optionsB5, operation);
+                    expectNoOptionsError(optionsA6, optionsB6, operation);
+                    expectNoOptionsError(optionsA7, optionsB7, operation);
+                }
+            );
         });
     });
 });

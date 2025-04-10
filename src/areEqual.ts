@@ -1,3 +1,4 @@
+import { DeepEqualityDataStructuresError } from './errors';
 import { Options } from './options';
 import { DeepSet } from './set';
 
@@ -10,7 +11,7 @@ import { DeepSet } from './set';
  */
 export function areEqual<V, TxV = V>(values: V[], options?: Options<V, null, TxV, null>): boolean {
     if (values.length === 0) {
-        throw new Error('Empty values list passed to areEqual function');
+        throw new DeepEqualityDataStructuresError('Empty values list passed to areEqual function');
     }
     const set = new DeepSet(values, options);
     return set.size === 1;

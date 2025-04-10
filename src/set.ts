@@ -103,6 +103,7 @@ export class DeepSet<V, TxV = V> extends Set<V> implements Comparable<DeepSet<V,
     }
 
     /**
+     * @param other the set to compare against
      * @returns true if the values of `other` are the same as this set
      */
     equals(other: this): boolean {
@@ -110,6 +111,7 @@ export class DeepSet<V, TxV = V> extends Set<V> implements Comparable<DeepSet<V,
     }
 
     /**
+     * @param other the set to compare against
      * @returns true if the values of `other` are all contained in this set
      */
     contains(other: this): boolean {
@@ -117,15 +119,15 @@ export class DeepSet<V, TxV = V> extends Set<V> implements Comparable<DeepSet<V,
     }
 
     /**
+     * @param other the set to compare against
      * @returns a new set whose values are the union of `this` and `other`.
-     *
-     * NOTE: If both maps prescribe the same key, the value from `other` will be retained.
      */
     union(other: this): DeepSet<V, TxV> {
         return this.getSetFromMapKeys(this.map.union(other['map']));
     }
 
     /**
+     * @param other the set to compare against
      * @returns a new set containing all values in `this` that are also in `other`.
      */
     intersection(other: this): DeepSet<V, TxV> {
@@ -133,6 +135,7 @@ export class DeepSet<V, TxV = V> extends Set<V> implements Comparable<DeepSet<V,
     }
 
     /**
+     * @param other the set to compare against
      * @returns a new set containing all values in `this` that are not also in `other`.
      */
     difference(other: this): DeepSet<V, TxV> {

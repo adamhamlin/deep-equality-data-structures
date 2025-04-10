@@ -1,4 +1,5 @@
 import { Comparable } from './comparable';
+import { DeepEqualityDataStructuresError } from './errors';
 import { Normalized, Normalizer } from './normalizer';
 import { Options } from './options';
 
@@ -129,6 +130,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
      * @returns true if the entries of `other` are the same as this map
      */
     equals(other: this): boolean {
+        this.validateUsingSameOptionsAs(other);
         return this.size === other.size && this.contains(other);
     }
 
@@ -137,6 +139,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
      * @returns true if the entries of `other` are all contained in this map
      */
     contains(other: this): boolean {
+        this.validateUsingSameOptionsAs(other);
         return [...other.entries()].every(([key, val]) => this.keyValuePairIsPresentIn(key, val, this));
     }
 
@@ -147,6 +150,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
      * NOTE: If both maps prescribe the same key, the key-value pair from `this` will be retained.
      */
     union(other: this): DeepMap<K, V, TxK, TxV> {
+        this.validateUsingSameOptionsAs(other);
         return new DeepMap([...other.entries(), ...this.entries()], this.options);
     }
 
@@ -155,6 +159,8 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
      * @returns a new map containing all key-value pairs in `this` that are also present in `other`.
      */
     intersection(other: this): DeepMap<K, V, TxK, TxV> {
+        this.validateUsingSameOptionsAs(other);
+
         const intersectingPairs = [...this.entries()].filter(([key, val]) =>
             this.keyValuePairIsPresentIn(key, val, other)
         );
@@ -166,6 +172,8 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
      * @returns a new map containing all key-value pairs in `this` that are not present in `other`.
      */
     difference(other: this): DeepMap<K, V, TxK, TxV> {
+        this.validateUsingSameOptionsAs(other);
+
         const differencePairs = [...this.entries()].filter(
             ([key, val]) => !this.keyValuePairIsPresentIn(key, val, other)
         );
@@ -180,6 +188,14 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
 
     protected normalizeValue(input: V): Normalized<TxV> {
         return this.normalizer.normalizeValue(input);
+    }
+
+    private validateUsingSameOptionsAs(other: this): void {
+        if (this.normalizer.getOptionsChecksum() !== other['normalizer'].getOptionsChecksum()) {
+            throw new DeepEqualityDataStructuresError(
+                'Structures must use same options for Comparable interface operations'
+            );
+        }
     }
 
     /**
