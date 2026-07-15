@@ -91,7 +91,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
      * @yields the next key-value pair in the map
      * @inheritdoc
      */
-    override *[Symbol.iterator](): IterableIterator<[K, V]> {
+    override *[Symbol.iterator](): MapIterator<[K, V]> {
         for (const [_hashStr, pair] of this.map[Symbol.iterator]()) {
             yield [pair.key, pair.val];
         }
@@ -101,7 +101,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
      * @yields the next key-value pair in the map
      * @inheritdoc
      */
-    override *entries(): IterableIterator<[K, V]> {
+    override *entries(): MapIterator<[K, V]> {
         for (const entry of this[Symbol.iterator]()) {
             yield entry;
         }
@@ -110,7 +110,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     /**
      * @inheritdoc
      */
-    override *keys(): IterableIterator<K> {
+    override *keys(): MapIterator<K> {
         for (const [key, _val] of this[Symbol.iterator]()) {
             yield key;
         }
@@ -119,7 +119,7 @@ export class DeepMap<K, V, TxK = K, TxV = V> extends Map<K, V> implements Compar
     /**
      * @inheritdoc
      */
-    override *values(): IterableIterator<V> {
+    override *values(): MapIterator<V> {
         for (const [_key, val] of this[Symbol.iterator]()) {
             yield val;
         }

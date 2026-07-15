@@ -5,13 +5,14 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout/install
-        uses: adamhamlin/checkout-node-project@v1
+        uses: adamhamlin/checkout-node-project@v2
 
       - name: Run Tests
         run: npm run test:ci
