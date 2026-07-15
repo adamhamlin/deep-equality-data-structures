@@ -71,7 +71,7 @@ export class DeepSet<V, TxV = V> extends Set<V> implements Comparable<DeepSet<V,
     /**
      * @inheritdoc
      */
-    override *[Symbol.iterator](): IterableIterator<V> {
+    override *[Symbol.iterator](): SetIterator<V> {
         for (const [key, _val] of this.map[Symbol.iterator]()) {
             yield key;
         }
@@ -80,7 +80,7 @@ export class DeepSet<V, TxV = V> extends Set<V> implements Comparable<DeepSet<V,
     /**
      * @inheritdoc
      */
-    override *entries(): IterableIterator<[V, V]> {
+    override *entries(): SetIterator<[V, V]> {
         for (const val of this[Symbol.iterator]()) {
             yield [val, val];
         }
@@ -89,7 +89,7 @@ export class DeepSet<V, TxV = V> extends Set<V> implements Comparable<DeepSet<V,
     /**
      * @inheritdoc
      */
-    override *keys(): IterableIterator<V> {
+    override *keys(): SetIterator<V> {
         for (const val of this[Symbol.iterator]()) {
             yield val;
         }
@@ -98,7 +98,7 @@ export class DeepSet<V, TxV = V> extends Set<V> implements Comparable<DeepSet<V,
     /**
      * @inheritdoc
      */
-    override *values(): IterableIterator<V> {
+    override *values(): SetIterator<V> {
         yield* this.keys();
     }
 

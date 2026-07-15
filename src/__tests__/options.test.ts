@@ -120,7 +120,7 @@ describe('options.ts', () => {
                 const opts = {
                     caseInsensitive: true,
                     // eslint-disable-next-line jest/no-conditional-in-test
-                    replacer: (val: unknown) => (typeof val === 'string' ? val.trimEnd() : val),
+                    replacer: (val: unknown) => (typeof val === 'string' ? val.trim() : val),
                 };
                 expect(areEqual([{ word: 'blah' }, { WORD: 'Blah    ' }], opts)).toBe(true);
             });

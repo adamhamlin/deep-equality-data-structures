@@ -2,7 +2,7 @@ import hash from 'object-hash';
 
 import { Normalizer } from '../normalizer';
 
-jest.mock('object-hash', () => {
+jest.mock<typeof import('object-hash')>('object-hash', () => {
     const origModule = jest.requireActual('object-hash');
     return {
         __esModule: true,
